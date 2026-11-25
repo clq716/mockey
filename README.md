@@ -92,9 +92,8 @@ func TestWin(t *testing.T) {
 - Linux
 - Windows
 
-### Arch Support 
+### Arch Support
 - AMD64
-- ARM64
 - RISC-V64 (Linux)
 
 ### Version Support 
@@ -802,7 +801,6 @@ func main() {
     ```
 5. The function call happens before mock execution. Try setting a breakpoint at the first line of the original function. If the execution reaches the first line when the stack is not after the mock code in the unit test, this is the issue. Common in `init()` functions. See [relevant section](#how-to-mock-functions-in-dependency-package-init) for how to mock functions in `init()`.
 6. Using non-generic mock for generic functions. See [Generic function/method](#generic-functionmethod) section for details.
-7. Occasional mock failures or inability to restore mocks under the arm64 architecture. Please upgrade to the latest version, see [#90](https://github.com/bytedance/mockey/issues/90).
 
 ### How to mock interface types?
 Method 1: Use `GetMethod` to get the corresponding method from the instance
@@ -932,7 +930,7 @@ If you encounter this error when mocking the same generic function with differen
 - If the target and hook function signatures appear identical in the error, check if the import packages in the test code and target function code are consistent
 
 ### Crash "signal SIGBUS: bus error"?
-Mac M series computers (darwin/arm64) have a higher probability of encountering this issue. You can retry multiple times. In v1.4.0, we fixed this issue (to some extent). Related discussion [here](https://github.com/bytedance/mockey/issues/68).
+You can retry multiple times. In v1.4.0, we fixed this issue (to some extent). Related discussion [here](https://github.com/bytedance/mockey/issues/68).
 ```
 fatal error: unexpected signal during runtime execution
 [signal SIGBUS: bus error code=0x1 addr=0x10509aec0 pc=0x10509aec0]
@@ -950,13 +948,6 @@ It is best not to directly mock system functions as it may cause probabilistic c
 ```
 fatal error: semacquire not on the G stack
 ```
-
-### M series Mac + Go 1.18 goes to wrong branch?
-This is a bug in golang under arm64 architecture for specific versions. Please check if the golang version is 1.18.1～1.18.5. If so, upgrade the golang version.
-
-Golang fix MR:
-- [go/reflect: Incorrect behavior on arm64 when using MakeFunc / Call [1.18 backport] · Issue #53397](https://github.com/golang/go/issues/53397)
-- https://go-review.googlesource.com/c/go/+/405114/2/src/cmd/compile/internal/ssa/rewriteARM64.go#28709
 
 ### Error "mappedReady and other memstats are not equal" / "index out of range" / "invalid reference to runtime.sysAlloc"？
 The version is too old, please upgrade to the latest version of mockey.

@@ -96,7 +96,6 @@ func TestWin(t *testing.T) {
 
 ### 架构支持
 - AMD64
-- ARM64
 - RISC-V64（Linux）
 
 ### 版本支持
@@ -800,7 +799,6 @@ func main() {
     ```
 5. 调用先于 mock 执行。请尝试打断点到原函数第一行，如果执行到第一行时堆栈不在单测的 mock 代码后，则是该问题，常见于 `init()` 函数里的初始化代码。如何 mock `init()`中的函数见 [FAQ](#如何-mock-依赖包-init-里的函数)。
 6. 对泛型函数使用了非泛型的 mock。详见[泛型函数/方法](#泛型函数方法)小节。
-7. arm64 架构下偶发的 mock 失效或者无法恢复 mock。请升级到最新版本，详见[#90](https://github.com/bytedance/mockey/issues/90)。
 
 ### 如何 mock interface 类型？
 方法一：使用 `GetMethod` 从实例获取相应方法
@@ -931,7 +929,7 @@ func main() {
 - 如果 target 和 hook 报错中函数签名看起来完全一样，检查单测代码里和目标函数代码里的 import 包是否一致
 
 ### 崩溃 "signal SIGBUS: bus error"？
-Mac M 系列电脑 (darwin/arm64) 有较大的概率碰到该问题，可以多次重试。在 v1.4.0 版本中，我们修复了该问题（一定程度上），相关讨论见[此处](https://github.com/bytedance/mockey/issues/68)。
+可以多次重试。在 v1.4.0 版本中，我们修复了该问题（一定程度上），相关讨论见[此处](https://github.com/bytedance/mockey/issues/68)。
 ```
 fatal error: unexpected signal during runtime execution
 [signal SIGBUS: bus error code=0x1 addr=0x10509aec0 pc=0x10509aec0]
@@ -949,13 +947,6 @@ fatal error: unexpected signal during runtime execution
 ```
 fatal error: semacquire not on the G stack
 ```
-
-### M 系列 Mac + Go 1.18 走入错误的分支？
-该问题是 golang 在 arm64 架构下特定版本的 bug，请检查 golang 版本是否为 1.18.1～1.18.5，如果是升级 golang 版本即可。
-
-Golang fix MR:
-- [go/reflect: Incorrect behavior on arm64 when using MakeFunc / Call [1.18 backport] · Issue #53397](https://github.com/golang/go/issues/53397)
-- https://go-review.googlesource.com/c/go/+/405114/2/src/cmd/compile/internal/ssa/rewriteARM64.go#28709
 
 ### 错误 "mappedReady and other memstats are not equal" / "index out of range" / "invalid reference to runtime.sysAlloc"？
 版本太老，请升级到 mockey 最新版。

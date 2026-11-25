@@ -446,11 +446,6 @@ func TestMultiArgs(t *testing.T) {
 	PatchConvey("multi-arg-result", t, func() {
 		PatchConvey("multi-arg", func() {
 			// Go supports passing function arguments from go 1.17
-			//
-			// Mockey used to use X10 register to make BR instruction in
-			// arm64, which will cause arguments and results get a wrong value
-			//
-			// _0~_15 use x0~x15 register
 			fn := func(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20 int64) {
 				fmt.Println(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20)
 			}
